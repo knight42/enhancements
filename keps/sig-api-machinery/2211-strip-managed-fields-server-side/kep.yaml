@@ -1,0 +1,23 @@
+title: Strip managedFields on the server-side
+kep-number: "2211"
+authors: ['@knight42']
+owning-sig: sig-api-machinery
+participating-sigs: [sig-cli]
+reviewers: ['@apelisse', '@kwiesmueller']
+approvers: ['@wojtek-t']
+prr-approvers: ['@wojtek-t']
+creation-date: "2020-12-23"
+last-updated: v1.21
+status: provisional
+see-also:
+  - https://github.com/kubernetes/kubernetes/issues/90066
+stage: alpha
+latest-milestone: v1.21
+milestone:
+  alpha: v1.21
+  beta: v1.22
+  stable: v1.23
+# TODO: do we need a feature gate?
+feature-gates: []
+disable-supported: true
+metrics: []
