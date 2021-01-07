@@ -106,10 +106,12 @@ Items marked with (R) are required *prior to targeting to a milestone / release*
 ## Summary
 
 ManagedFields is used to keep track of who has changed a field of an object, and Server-side Apply relies on such information.
-While the managedFields is beneficial to resolving conflicts on updates, it is a bit verbose to many users because this field
-could be quite large and generally users are not interested in this information.
+While the managedFields is beneficial to resolving conflicts on updates, it is a bit verbose to many users and controllers
+because this field could be quite large and generally users and controllers are not interested in such information. 
+In addition, the bandwidth usage and size of internal caches could be significantly affected due to the additional managedFields.
 
-This KEP is proposing stripping the managedFields on the server-side when users request objects to make the response less verbose.
+This KEP is proposing stripping the managedFields on the server-side when clients request objects to make the response less verbose
+and save the amount of data that needs to be transferred.
 
 ## Motivation
 
@@ -118,15 +120,16 @@ Many users have complained in [kubernetes#90066][90066] that they got impacted b
 
 [90066]: https://github.com/kubernetes/kubernetes/issues/90066
 
-At the same time, it is not ideal to only drop the managedFields on the client-side, because that would require every client
-(such as kubectl or CLI tools written by users using client-go) to do the same thing.
+At the same time, it is not ideal to only drop the managedFields on the client-side, because that requires the same
+bandwidth usage compared to simply returning the original object, and every client
+(such as kubectl or CLI tools written by users using client-go) needs to strip the managedFields by themselves.
 
 With this KEP, the API server could return objects without managedFields on demand, so that least client-side changes is needed
 to make the response less verbose. 
 
 ### Goals
 
-* Strip managedFields on the server-side.
+* Omit managedFields from responses, when requested by clients.
 
 ### Non-Goals
 
